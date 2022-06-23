@@ -15,8 +15,6 @@ const app = express()
 app.use(bodyParser.json())
 app.use(cookieParser(process.env.COOKIE_SECRET))
 
-//Add the client URL to the CORS policy
-
 const whitelist = process.env.WHITELISTED_DOMAINS
   ? process.env.WHITELISTED_DOMAINS.split(",")
   : []
@@ -29,7 +27,6 @@ const corsOptions = {
       callback(new Error("Not allowed by CORS"))
     }
   },
-
   credentials: true,
 }
 
@@ -43,6 +40,5 @@ app.get("/", function (req, res) {
 
 const server = app.listen(process.env.PORT || 8081, function () {
   const port = server.address().port
-
   console.log("App started at port:", port)
 })
