@@ -2,6 +2,8 @@ const passport = require("passport")
 const jwt = require("jsonwebtoken")
 const dev = process.env.NODE_ENV !== "production"
 
+// Used for creating the refresh token cookie, which should be httpOnly
+// and secure so that it cannot be read by client JS. 
 exports.COOKIE_OPTIONS = {
   httpOnly: true,
   // Since localhost is not having https protocol,
@@ -9,7 +11,7 @@ exports.COOKIE_OPTIONS = {
   secure: !dev,
   signed: true,
   maxAge: eval(process.env.REFRESH_TOKEN_EXPIRY) * 1000,
-  sameSite: "none",
+  sameSite: "none", // client and server in different domains 
 }
 
 exports.getToken = user => {

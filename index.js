@@ -2,9 +2,18 @@ const express = require("express")
 const cors = require("cors")
 const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
+const passport = require("passport")
 const mongoose = require("mongoose")
 const url = process.env.MONGO_DB_CONNECTION_STRING
 const app = express()
+
+require("./strategies/JwtStrategy")
+require("./strategies/LocalStrategy")
+require("./authenticate")
+
+const userRouter = require("./routes/userRoutes")
+app.use("/users", userRouter)
+app.use(passport.initialize())
 
 if (process.env.NODE_ENV !== "production") {
   // Load environment variables from .env file in non prod environments
