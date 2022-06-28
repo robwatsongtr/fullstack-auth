@@ -44,7 +44,9 @@ const User = new Schema({
   },
 })
 
-//Remove refreshToken from the response
+// Remove refreshToken from the response so that we don't expose user's 
+// refresh tokens whenever we serialize the model and send the data 
+// in the API response.
 User.set("toJSON", {
   transform: function (doc, ret, options) {
     delete ret.refreshToken

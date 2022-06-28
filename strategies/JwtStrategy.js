@@ -2,11 +2,14 @@
 const passport = require("passport")
 const JwtStrategy = require("passport-jwt").Strategy,
   ExtractJwt = require("passport-jwt").ExtractJwt
-
 const User = require("../models/user")
 
 const opts = {}
 
+// As you could see we are using fromAuthHeaderAsBearerToken function, 
+// specifying JwtStrategy to extract the JWT from the authentication 
+// bearer header. We will see how to pass the JWT in the 
+// authentication header in the upcoming sections.
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken()
 opts.secretOrKey = process.env.JWT_SECRET
 
@@ -16,7 +19,7 @@ passport.use(
   new JwtStrategy(opts, function (jwt_payload, done) {
     // Check against the DB only if necessary.
     // This can be avoided if you don't want to fetch user details in each request.
-    User.findOne({ _id: jwt_payload._id }, function (err, user) {
+    User.findOne({ _id: jwt_payload._id }, (err, user) => {
       if (err) {
         return done(err, false)
       }
